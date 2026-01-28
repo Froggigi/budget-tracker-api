@@ -18,7 +18,7 @@
 ---
 
 ## 📂 專案架構
-
+```
 budget-tracker
 ├─ controllers
 │ ├─ authController.js
@@ -34,7 +34,7 @@ budget-tracker
 ├─ app.js
 └─ package.json
 
-
+```
 ---
 
 ## 🔐 身分驗證流程（JWT）
