@@ -111,11 +111,11 @@ Authorization: Bearer <token>
 
 後來在重構時重新整理專案責任分層，調整為：
 
-authRoutes：僅負責身分驗證（Login / JWT 發放）
+- authRoutes：僅負責身分驗證（Login / JWT 發放）
 
-recordRoutes：負責記帳資料 CRUD
+- recordRoutes：負責記帳資料 CRUD
 
-authMiddleware：統一處理 JWT 驗證邏輯
+- authMiddleware：統一處理 JWT 驗證邏輯
 
 透過 Middleware 注入驗證機制，使各資源路由保持單一責任，
 並提升可維護性與擴充性。
