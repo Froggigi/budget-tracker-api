@@ -104,6 +104,22 @@ Authorization: Bearer <token>
 - 部署至雲端（Docker + Nginx）  
 - 前端串接（React / Vue）
 
+## 🧠 架構設計說明（Auth / Middleware 分離）
+
+在開發初期，曾將需要登入驗證的 API
+直接放置於 authRoutes 中。
+
+後來在重構時重新整理專案責任分層，調整為：
+
+authRoutes：僅負責身分驗證（Login / JWT 發放）
+
+recordRoutes：負責記帳資料 CRUD
+
+authMiddleware：統一處理 JWT 驗證邏輯
+
+透過 Middleware 注入驗證機制，使各資源路由保持單一責任，
+並提升可維護性與擴充性。
+
 ---
 
 ## 👤 作者
