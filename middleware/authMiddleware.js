@@ -15,5 +15,5 @@ const authenticate = (req, res, next) => {
     return res.status(401).json({ message: 'Invalid token' });
   }
 };
-
+// console.log('Authorization header:', req.headers.authorization);
 module.exports = authenticate;
