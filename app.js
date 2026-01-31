@@ -31,4 +31,4 @@ app.listen(PORT, () => {
 //新增登入
 const authRoutes = require('./routes/authRoutes');
 
-app.use('/api', authRoutes);
+app.use('/auth', authRoutes);

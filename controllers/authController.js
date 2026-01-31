@@ -30,9 +30,13 @@ exports.register = (req, res) => {
 // 登入功能
 exports.login = (req, res) => {
   const { email, password } = req.body;
+  // 測試
+  console.log('前端傳來的帳號密碼', email, password);
 
   // 1️⃣ 檢查使用者是否存在
   const user = userModel.findByEmail(email);
+  // 測試
+  console.log('找到的使用者', user);
   if (!user) {
     return res.status(401).json({ message: '帳號或密碼錯誤' });
   }
