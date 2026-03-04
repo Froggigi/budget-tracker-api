@@ -1,11 +1,10 @@
 const express = require('express');
 const cors = require('cors');
 const recordRoutes = require('./routes/recordRoutes');
-require('dotenv').config();
 
+const authRoutes = require('./routes/authRoutes');
 
 const app = express();
-const PORT = process.env.PORT || 3000; 
 
 app.use(cors());
 app.use(express.json());
@@ -15,7 +14,6 @@ app.get('/', (req, res) => {
 });
 
 
-app.use('/api/records', recordRoutes);
 
 
 app.use((req, res, next) => {
@@ -23,12 +21,11 @@ app.use((req, res, next) => {
   next();
 });
 
-
-app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
-});
+app.use('/api/records', recordRoutes);
 
 //新增登入
-const authRoutes = require('./routes/authRoutes');
-
 app.use('/auth', authRoutes);
+
+
+
+module.exports = app;
