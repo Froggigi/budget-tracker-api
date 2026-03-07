@@ -28,16 +28,21 @@ exports.register = (req, res) => {
 
 
 // 登入功能
-exports.login = (req, res) => {
+exports.login = async (req, res) => {
   const { email, password } = req.body;
   // 測試
   console.log('前端傳來的帳號密碼', email, password);
 
   // 1️⃣ 檢查使用者是否存在
-  const user = userModel.findByEmail(email);
+  const user = await userModel.findByEmail(email);
   // 測試
   console.log('找到的使用者', user);
   if (!user) {
+     // 印整個 collection 看資料
+    const User = require('../models/user');
+    const allUsers = await User.find();
+    console.log("整個 users collection:", allUsers);
+
     return res.status(401).json({ message: '帳號或密碼錯誤' });
   }
 
