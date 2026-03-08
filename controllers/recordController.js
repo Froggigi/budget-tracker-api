@@ -18,6 +18,7 @@ exports.getRecordById = (req, res) => {
 
 // 'C'
 exports.createRecord = (req, res) => {
+  console.log("req.body =", req.body)
   const newRecord = req.body;
   //增加驗證
   if ( !newRecord.name || typeof newRecord.amount !== 'number'){
@@ -25,10 +26,7 @@ exports.createRecord = (req, res) => {
   }
 
   recordModel.add(newRecord);
-  res.status(201).json({ 
-    message: 'Record created', 
-    data: newRecord 
-  });
+  res.status(201).json(newRecord);
 };
 
 // 'U'
