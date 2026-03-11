@@ -1,9 +1,15 @@
 const recordModel = require('../models/recordModel');
+const Record = require('../models/Record')
 
 // 取所有資料 'R'
-exports.getAllRecords = (req, res) => {
+exports.getAllRecords = async (req, res) => {
   // console.log('✅ getAllRecords 被呼叫');  // ← 測試 加這行！  
-  res.json(recordModel.getAll());
+  try {
+    const records = await Record.find()
+    res.json(records)
+  } catch (err) {
+    res.status(500).json({ message: err.message })
+  }
 };
 
 // 新增 取單筆資料 
@@ -17,38 +23,54 @@ exports.getRecordById = (req, res) => {
 }
 
 // 'C'
-exports.createRecord = (req, res) => {
+exports.createRecord = async (req, res) => {
   console.log("req.body =", req.body)
-  const newRecord = req.body;
-  //增加驗證
-  if ( !newRecord.name || typeof newRecord.amount !== 'number'){
-    return res.status(400).json({ message: '請提供正確的name 與 amount'});
-  }
+  try {
+    const record = new Record(req.body)
 
-  recordModel.add(newRecord);
-  res.status(201).json(newRecord);
+    const savedRecord = await record.save()
+    
+    res.status(201).json(savedRecord)
+  } catch{
+    res.status(400).json({ message: err.message })
+  }
 };
 
 // 'U'
-exports.updateRecord = (req, res) => {
-  const id = parseInt(req.params.id);
-  const updatedData = req.body;
-  const updated = recordModel.update(id, updatedData);
-  if (updated) {
-    res.json({ message: 'Record updated', data: updated });
-  } else {
-    res.status(404).json({ message: 'Record not found' });
+exports.updateRecord = async (req, res) => {
+  try {
+
+    const record = await Record.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { returnDocument: 'after' }
+    )
+
+    if (!record) {
+      return res.status(404).json({ message: "Record not found" })
+    }
+
+    res.json(record)
+
+  } catch (err) {
+    res.status(500).json({ message: err.message })
   }
-};
+}
+
 
 // 'D'
-exports.deleteRecord = (req, res) => {
-  const id = parseInt(req.params.id);
-  console.log('🗑 deleteRecord 被呼叫，id:', id);
-  const deleted = recordModel.remove(id);
-  if (deleted) {
-    res.json({ message: 'Record deleted' });
-  } else {
-    res.status(404).json({ message: 'Record not found' });
+exports.deleteRecord = async (req, res) => {
+  try {
+
+    const record = await Record.findByIdAndDelete(req.params.id)
+
+    if (!record) {
+      return res.status(404).json({ message: "Record not found" })
+    }
+
+    res.json({ message: "Record deleted" })
+
+  } catch (err) {
+    res.status(500).json({ message: err.message })
   }
-};
+}
